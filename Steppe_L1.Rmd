@@ -3,27 +3,81 @@ title: "Steppe_L1"
 output: html_document
 date: "2025-07-14"
 ---
+# Load Packages, psuedocode is blue and is demarcated by hashtags
+library(arrow)
+library(dplyr)
+install.packages("ggplot2")
+library(ggplot2)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+# Load Data
+merged_data <- read_parquet(file = "merged_data.parquet", stringAsFactors = TRUE)
 
-## R Markdown
+# Exploring the data
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Heading shows the first bit of data depending on the perameters First is columns, second is first rows
+head(merged_data[, 1:10], 6)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Tailing shows the end of the data depnding on the perameters. First is columns, second is last rows
+tail(merged_data[, 1:10], 6)
 
-```{r cars}
-summary(cars)
-```
+## String shows the variable type and data structure
+str(merged_data[, 1:10])
 
-## Including Plots
+# Cleaning Data
 
-You can also embed plots, for example:
+## na.omit gets rid of null values
+merged_data_omitted <- na.omit(merged_data)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+## Saving a backup
+merged_data <- read_parquet(file = "merged_data.parquet", stringAsFactors = True)
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Subsetting Data
+
+## Subset cuts out just the data we want, essentially queries
+subset_data_az <- subset(merged_data, STATE_ABBR_2010SVI == "AZ")
+
+# Summarize Data
+
+## Provides basic statistics lik mean medium mode, provides the columns [x:x] and rows
+summary(subset_data_az[,1:10], 6)
+
+## Saving objectsof mean and standard dev
+upward_mean_2010_az <- mean(subset_data_az$upward_mobility_rate_2010)
+upward_sd_2010_az <- sd(subset_data_az$upward_mobility_rate_2010)
+upward_mean_2020_az <- mean(subset_data_az$upward_mobility_rate_2020)
+upward_sd_2020_az <- sd(subset_data_az$upward_mobility_rate_2020)
+
+## Displaying the respective means and sds with a print function
+print(upward_mean_2010_az)
+upward_mean_2010_az
+print(upward_mean_2010_az <- mean(subset_data_az$upward_mobility_rate_2010))
+print(upward_sd_2010_az <- sd(subset_data_az$upward_mobility_rate_2010))
+print(upward_mean_2020_az <- mean(subset_data_az$upward_mobility_rate_2020))
+print(upward_sd_2020_az <- sd(subset_data_az$upward_mobility_rate_2020))
+
+## Creating a query for California
+subset_data_ca <- subset(merged_data, STATE_ABBR_2010SVI == "CA")
+print(upward_mean_2010_ca <- mean(subset_data_ca$upward_mobility_rate_2010))
+print(upward_sd_2010_ca <- sd(subset_data_ca$upward_mobility_rate_2010))
+print(upward_mean_2020_ca <- mean(subset_data_ca$upward_mobility_rate_2020))
+print(upward_sd_2020_ca <- sd(subset_data_ca$upward_mobility_rate_2020))
+
+## Even durthe querys for county level data
+print(pima_upward_mean_2010_az <- mean(subset_data_az$upward_mobility_rate_2010[subset_data_az$COUNTY_2010SVI == "Pima County"]))
+print(pima_upward_mean_2010_az <- sd(subset_data_az$upward_mobility_rate_2010[subset_data_az$COUNTY_2010SVI == "Pima County"]))
+print(del_norte_upward_mean_2010_ca <- mean(subset_data_ca$upward_mobility_rate_2010[subset_data_ca$COUNTY_2010SVI == "Del Norte County"]))
+print(pima_upward_mean_2010_ca <- sd(subset_data_ca$upward_mobility_rate_2010[subset_data_ca$COUNTY_2010SVI == "Del Norte County"]))
+
+# Sumarizing statistics using dplyr
+
+## Create an object... %>% is then. So we create sumary stats which takes from the arizona data which is grouped bu county where each is summarized with the respective mean and sds for the mobility rates
+summary_stats_upward_2010 <- subset_data_az %>%
+  group_by(COUNTY_2010SVI) %>%
+  summarize(mean_mobility_2010_az = mean(upward_mobility_rate_2010),
+            sd_mobility_2010_az = sd(upward_mobility_rate_2010))
+(head(summary_stats_upward_2010))
+
+# GG Plot
+
+#
+mobility_plot <- ggplot(data = sumary_stats_upward_2010)
