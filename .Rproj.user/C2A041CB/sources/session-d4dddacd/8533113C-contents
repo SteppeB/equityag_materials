@@ -128,3 +128,11 @@ last_plot_dos <- ggplot(data = siskiyou_subset, mapping = aes(x = COUNTY_2010SVI
 print(last_plot_dos)
 
 ## The plots are nearly identical there is one major outlier being the immense growth of 4x in tract 6093001000. There is a 0 value which could influence the plot but doesn't technically qualify as an outlier.
+
+# Activity 3: Filter the data so that we only have a mobility rate over one
+filtered_ca <- subset_data_ca %>%
+  filter(upward_mobility_rate_2010 > 1) 
+print(nrow(filtered_ca))
+
+## There are census blocks in California with an upward mobility rate over one.The majority of counties that are shown are urban and wealthy. 
+  

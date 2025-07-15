@@ -3,7 +3,7 @@
     "path": "~/EquityAgProjects/equityag_materials/Steppe_L1.Rmd",
     "project_path": "Steppe_L1.Rmd",
     "type": "r_markdown",
-    "hash": "1058353663",
+    "hash": "3985993764",
     "contents": "",
     "dirty": false,
     "created": 1752531035570.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "129,209",
-        "scrollLine": "110"
+        "cursorPosition": "136,142",
+        "scrollLine": "117"
     },
     "folds": "",
-    "lastKnownWriteTime": 1752558577,
+    "lastKnownWriteTime": 1752596559,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1752558577245,
+    "last_content_update": 1752596559791,
     "read_only": false,
     "read_only_alternatives": []
 }
