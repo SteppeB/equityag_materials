@@ -62,7 +62,7 @@ print(upward_sd_2010_ca <- sd(subset_data_ca$upward_mobility_rate_2010))
 print(upward_mean_2020_ca <- mean(subset_data_ca$upward_mobility_rate_2020))
 print(upward_sd_2020_ca <- sd(subset_data_ca$upward_mobility_rate_2020))
 
-## Even durthe querys for county level data
+## Add querys for county level data
 print(pima_upward_mean_2010_az <- mean(subset_data_az$upward_mobility_rate_2010[subset_data_az$COUNTY_2010SVI == "Pima County"]))
 print(pima_upward_mean_2010_az <- sd(subset_data_az$upward_mobility_rate_2010[subset_data_az$COUNTY_2010SVI == "Pima County"]))
 print(del_norte_upward_mean_2010_ca <- mean(subset_data_ca$upward_mobility_rate_2010[subset_data_ca$COUNTY_2010SVI == "Del Norte County"]))
@@ -79,5 +79,52 @@ summary_stats_upward_2010 <- subset_data_az %>%
 
 # GG Plot
 
-#
-mobility_plot <- ggplot(data = sumary_stats_upward_2010)
+## Create a mobility plot by accessing gg plot. The data is sumary stats, the map has an x axis of the county and a y axis of mean mobility
+mobility_plot <- ggplot(data = summary_stats_upward_2010, mapping = aes(x = COUNTY_2010SVI, y = mean_mobility_2010_az)) + geom_boxplot()
+print(mobility_plot)
+
+# State and county summary
+
+## Create a nerw summary states for all andcounties each with mean and standrd dev
+summary_stats_upward_2010_all <- merged_data %>%
+  group_by(STATE_ABBR_2010SVI, COUNTY_2010SVI) %>%
+    summarize(mean_mobility_2010 = mean(upward_mobility_rate_2010), sd_mobility_2010 = sd(upward_mobility_rate_2010))
+
+## Creating a new mobility plot using a new data set: the 2010 upward all
+new_plot <- ggplot(data = summary_stats_upward_2010_all, mapping = aes(x = STATE_ABBR_2010SVI, y = mean_mobility_2010)) + geom_boxplot()
+print(new_plot)
+
+## Remove missing states by is not applicable query
+summary_stats_upward_2010_all <- summary_stats_upward_2010_all[!is.na(summary_stats_upward_2010_all$STATE_ABBR_2010SVI),]
+mobility_plot <- ggplot(data = summary_stats_upward_2010_all, mapping = aes(x= STATE_ABBR_2010SVI, y=mean_mobility_2010, fill = STATE_ABBR_2010SVI)) + geom_boxplot()
+print(mobility_plot)
+
+## Saving
+ggsave(plot = mobility_plot, filename = "output/mobility-plot-2010.pdf")
+
+# Activity 1: Choosing a county to its 2010/2020 mobility averages and standard devs
+
+## Open the AZ and CA county tables
+table(subset_data_az$COUNTY_2010SVI)
+table(subset_data_ca$COUNTY_2010SVI)
+
+## I want to do Siskiyou county so using the subset data I should create objects of the 4 respective stats and can then print them
+print(siskiyou_upward_mean_2010_ca <- mean(subset_data_ca$upward_mobility_rate_2010[subset_data_ca$COUNTY_2010SVI == "Siskiyou County"]))
+print(siskiyou_upward_sd_2010_ca <- sd(subset_data_ca$upward_mobility_rate_2010[subset_data_ca$COUNTY_2010SVI == "Siskiyou County"]))
+print(siskiyou_upward_mean_2020_ca <- mean(subset_data_ca$upward_mobility_rate_2020[subset_data_ca$COUNTY_2010SVI == "Siskiyou County"]))
+print(siskiyou_upward_sd_2020_ca <- sd(subset_data_ca$upward_mobility_rate_2020[subset_data_ca$COUNTY_2010SVI == "Siskiyou County"]))
+
+## The 2010 mean and sd for upward mobility rate was 1.05798 and 1.097037 respectively. This is greater than the CA average of .898 for a mean and 1.06 as an sd. The 2020 mean and sd didn't change significantly as they stand at 1.0584 and 1.0968 which is still greater than the CA mean of .8979 and sd of 1.067.
+
+# Activity 2 plot the mean and dev into gg plot,
+
+## Create an summarized data set for Siskiyou County first by making a subset 
+siskiyou_subset <- subset(subset_data_ca, COUNTY_2010SVI == "Siskiyou County")
+
+## make the plots
+last_plot_uno <- ggplot(data = siskiyou_subset, mapping = aes(x = COUNTY_2010SVI, y = upward_mobility_rate_2010))+ geom_boxplot()
+print(last_plot_uno)
+last_plot_dos <- ggplot(data = siskiyou_subset, mapping = aes(x = COUNTY_2010SVI, y = upward_mobility_rate_2020))+ geom_boxplot()
+print(last_plot_dos)
+
+## The plots are nearly identical there is one major outlier being the immense growth of 4x in tract 6093001000. There is a 0 value which could influence the plot but doesn't technically qualify as an outlier.
