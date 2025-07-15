@@ -134,5 +134,13 @@ filtered_ca <- subset_data_ca %>%
   filter(upward_mobility_rate_2010 > 1) 
 print(nrow(filtered_ca))
 
+## Making a new data set with each of the county means over one. Turn that into a graph, x should be county y should be mean. Right now x is being registered as not a string. 
+county_means <- filtered_ca %>%
+  group_by(COUNTY_2010SVI) %>%
+    summarize(mean_rate_by_county = mean(upward_mobility_rate_2010))
+
+mean_bar <- ggplot(data = county_means, aes(x= reorder(COUNTY_2010SVI, mean_rate_by_county), y = mean_rate_by_county))+geom_bar(stat ="identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+print(mean_bar)
+
 ## There are census blocks in California with an upward mobility rate over one.The majority of counties that are shown are urban and wealthy. 
   
