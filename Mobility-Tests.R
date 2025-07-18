@@ -110,8 +110,8 @@ merged <- base_data
 merged <- merged %>% filter(!is.na(STATE_ABBR_2010SVI))
 
 # Create state data
-az <- merged_data[merged_data$STATE_NAME_2010SVI == "Arizona", ]
-ca <- merged_data[merged_data$STATE_NAME_2010SVI == "California", ]
+az <- base_data[base_data$STATE_NAME_2010SVI == "Arizona", ]
+ca <- base_data[base_data$STATE_NAME_2010SVI == "California", ]
 
 # Check rows and columns
 dim(merged)
@@ -128,5 +128,49 @@ print(nrow(ca))
 t.test(x = az$upward_mobility_rate_2010, y = ca$upward_mobility_rate_2010)
 
 # Compare multiple groups to make a mountain l~r is y = x
-MobilityRateAZ <- aov(formula = upward_mobility_rate_2010 ~ COUNTY_2010SVI, data = az)
+MobilityRateAZAov <- aov(formula = upward_mobility_rate_2010 ~ COUNTY_2010SVI, data = az)
+
+# This means mobility rate explained by county
+summary(object = MobilityRateAZAov)
+
+# Sinking to help with big files
+sink(file = "output/az_mobility_anova.txt")
+summary(object = MobilityRateAZAov)
+sink()
+
+# Linear Regressions!!
+
+# Plotting
+plot(x = base_data$upward_mobility_rate_2010, y = base_data$M_TOTPOP_2010SVI)
+
+# Making it a log
+merged$logpop <- log10(merged$M_TOTPOP_2010SVI)
+plot(x = merged$upward_mobility_rate_2010, y = merged$logpop, xlab = "Upward Mobility", ylab = "log10(Population)")
+
+# Running a linear model
+MobilityVPlot <- lm(upward_mobility_rate_2010 ~ logpop, data = merged)
+summary(MobilityVPlot)
+
+# New binary categories
+merged$az <- ifelse(merged$STATE_NAME_2010SVI == "Arizona", 1, 0)
+merged$ca <- ifelse(merged$STATE_NAME_2010SVI == "California", 1, 0)
+
+# Adding az as a predictor
+mobility_v_pop_state <- lm(formula = upward_mobility_rate_2010 ~ logpop + az, data = merged)
+summary(mobility_v_pop_state)
+
+# Sinking and saving
+sink(file = "output/mobility-pop-state-regression.txt")
+summary(MobilityVPlot)
+sink()
+
+# Making a new box plot of data I want to explore::::
+
+# Making new filtered data
+l1 <- base_data %>% filter(!is.na(STATE_ABBR_2010SVI)) %>% filter(E_MOBILE_2010SVI != -999)
+
+#
+boxplot(formula = E_MOBILE_2010SVI ~ STATE_NAME_2010SVI, data = l1)
+
+
 
