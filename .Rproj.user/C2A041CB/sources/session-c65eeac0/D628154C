@@ -1,0 +1,28 @@
+{
+    "id": "D628154C",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1752881956357.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "id": "962bca2313e7438abea53c7cba576fc2",
+        "name": "MobilityRateAZAov",
+        "title": "MobilityRateAZAov",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 18577644820234307,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1752881956357,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,28 @@
+{
+    "id": "927907A2",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1752881575437.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "id": "21d9fa3eca4c409caeb2c7a83772c558",
+        "name": "az_emobile_aov",
+        "title": "az_emobile_aov",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1379694431968,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1752881575437,
+    "read_only": false,
+    "read_only_alternatives": []
+}

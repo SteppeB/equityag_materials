@@ -169,8 +169,20 @@ sink()
 # Making new filtered data
 l1 <- base_data %>% filter(!is.na(STATE_ABBR_2010SVI)) %>% filter(E_MOBILE_2010SVI != -999)
 
-#
+# Creating a box plot of 
 boxplot(formula = E_MOBILE_2010SVI ~ STATE_NAME_2010SVI, data = l1)
 
+# Using anova to summarize
+az_emobile_aov <- aov(formula = upward_mobility_rate_2010 ~ E_MOBILE_2010SVI, data = az)
+summary(object = az_emobile_aov)
 
+# No significant impact of emobile on svi
+# For ca...
+ca_emobile_aov <- aov(formula = E_MOBILE_2010SVI ~ COUNTY_2010SVI, data = ca)
+summary(object = ca_emobile_aov)
 
+# There is significant influnce of social vulnerability by county over E_Mobile. This is evidenced by the F value of 24.
+
+# A new regression 
+mobility_v_pop_state <- lm(formula = upward_mobility_rate_2020 ~  COUNTY_2010SVI + E_MOBILE_2010SVI + TOTPOP_2010SVI, data = l1)
+summary(mobility_v_pop_state)

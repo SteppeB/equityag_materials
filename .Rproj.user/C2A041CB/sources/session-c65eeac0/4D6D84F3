@@ -1,0 +1,28 @@
+{
+    "id": "4D6D84F3",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1752881908033.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "id": "e142eddf79304f3ba19c1fc7fa186806",
+        "name": "ca_emobile_aov",
+        "title": "ca_emobile_aov",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 4051047484069721906,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1752881908033,
+    "read_only": false,
+    "read_only_alternatives": []
+}
